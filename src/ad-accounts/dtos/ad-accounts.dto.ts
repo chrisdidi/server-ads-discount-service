@@ -2,6 +2,6 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class MyAdAccountsOutput {
-  @Field()
-  name: string;
+  @Field(type => String)
+  name?: string;
 }
