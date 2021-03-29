@@ -11,10 +11,18 @@ export class AdAccountsService {
     private readonly adAccounts: Repository<AdAccounts>,
   ) {}
 
-  async getMyAdAccounts(): Promise<MyAdAccountsOutput[]> {
+  async getMyAdAccounts(): Promise<MyAdAccountsOutput> {
     try {
-      return await this.adAccounts.find({ select: ['name'] });
+      const data = await this.adAccounts.find({
+        select: ['id', 'name'],
+        relations: ['discounts', 'discounts.adType', 'discounts.freeAd'],
+      });
+      console.log(data[0].discounts);
+      return {
+        data,
+      };
     } catch (e) {
+      console.log(e);
       throw new InternalServerErrorException();
     }
   }

@@ -1,7 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, PickType } from '@nestjs/graphql';
+import { CoreOutput } from 'src/common/core.entity';
+import { AdAccounts } from '../ad-accounts.entity';
 
 @ObjectType()
-export class MyAdAccountsOutput {
-  @Field(type => String)
-  name?: string;
+export class MyAdAccountsOutput extends CoreOutput {
+  @Field(type => [AdAccounts])
+  data: AdAccounts[];
 }

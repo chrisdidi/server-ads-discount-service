@@ -6,6 +6,10 @@ import { AdAccountsModule } from './ad-accounts/ad-accounts.module';
 import { CommonModule } from './common/common.module';
 import * as Joi from 'joi';
 import { AdAccounts } from './ad-accounts/ad-accounts.entity';
+import { AdTypesModule } from './ad-types/ad-types.module';
+import { DiscountsAccountsModule } from './discounts-accounts/discounts-accounts.module';
+import { AdTypes } from './ad-types/ad-types.entity';
+import { DiscountsAccounts } from './discounts-accounts/discounts-accounts.entity';
 
 @Module({
   imports: [
@@ -38,7 +42,7 @@ import { AdAccounts } from './ad-accounts/ad-accounts.entity';
           }),
       synchronize: process.env.NODE_ENV !== 'production',
       logging: process.env.NODE_ENV !== 'production',
-      entities: [AdAccounts],
+      entities: [AdAccounts, AdTypes, DiscountsAccounts],
     }),
     GraphQLModule.forRoot({
       playground: process.env.NODE_ENV !== 'production',
@@ -46,6 +50,8 @@ import { AdAccounts } from './ad-accounts/ad-accounts.entity';
     }),
     AdAccountsModule,
     CommonModule,
+    AdTypesModule,
+    DiscountsAccountsModule,
   ],
 })
 export class AppModule {}

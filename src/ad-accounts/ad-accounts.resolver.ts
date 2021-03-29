@@ -6,7 +6,7 @@ import { MyAdAccountsOutput } from './dtos/ad-accounts.dto';
 @Resolver(of => AdAccounts)
 export class AdAccountsResolver {
   constructor(private readonly adAccountsService: AdAccountsService) {}
-  @Query(returns => [MyAdAccountsOutput])
+  @Query(returns => MyAdAccountsOutput)
   async myAdAccounts() {
     return this.adAccountsService.getMyAdAccounts();
   }
