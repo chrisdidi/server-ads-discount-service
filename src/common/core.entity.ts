@@ -39,4 +39,7 @@ export class CoreOutput {
 
   @Field(type => Boolean, { nullable: true })
   hasPrevPage?: boolean;
+
+  @Field(type => String, { nullable: true })
+  error?: string;
 }

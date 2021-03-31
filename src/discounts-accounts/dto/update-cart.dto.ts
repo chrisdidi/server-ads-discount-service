@@ -48,6 +48,6 @@ class OutputData {
 
 @ObjectType()
 export class UpdateCartOutput extends CoreOutput {
-  @Field(type => OutputData)
-  data: OutputData;
+  @Field(type => OutputData, { nullable: true })
+  data?: OutputData;
 }
