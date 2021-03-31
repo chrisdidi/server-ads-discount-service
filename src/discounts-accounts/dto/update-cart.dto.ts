@@ -43,7 +43,10 @@ class OutputData {
   cart: CartItemOutput[];
 
   @Field(type => Number)
-  price: number;
+  originalPrice: number;
+
+  @Field(type => Number)
+  discountedPrice: number;
 }
 
 @ObjectType()
