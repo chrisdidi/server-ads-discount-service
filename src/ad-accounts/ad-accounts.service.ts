@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AdAccounts } from './ad-accounts.entity';
-import { MyAdAccountsOutput } from './dtos/ad-accounts.dto';
+import { MyAdAccountsOutput } from './dtos/my-ad-accounts.dto';
 
 @Injectable()
 export class AdAccountsService {
@@ -17,7 +17,6 @@ export class AdAccountsService {
         select: ['id', 'name'],
         relations: ['discounts', 'discounts.adType', 'discounts.freeAd'],
       });
-      console.log(data[0].discounts);
       return {
         data,
       };
