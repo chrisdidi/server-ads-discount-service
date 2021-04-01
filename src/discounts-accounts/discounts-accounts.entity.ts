@@ -1,10 +1,4 @@
-import {
-  Field,
-  InputType,
-  ObjectType,
-  registerEnumType,
-} from '@nestjs/graphql';
-import { IsEnum } from 'class-validator';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { AdAccounts } from 'src/ad-accounts/ad-accounts.entity';
 import { AdTypes } from 'src/ad-types/ad-types.entity';
 import { CoreEntity } from 'src/common/core.entity';

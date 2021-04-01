@@ -1,4 +1,4 @@
-import { Field, ObjectType, PickType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { CoreOutput } from 'src/common/core.entity';
 import { AdAccounts } from '../ad-accounts.entity';
 

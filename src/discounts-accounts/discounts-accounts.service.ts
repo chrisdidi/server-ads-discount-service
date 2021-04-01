@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Console } from 'console';
 import { AdTypes } from 'src/ad-types/ad-types.entity';
 import { Repository } from 'typeorm';
 import { DiscountsAccounts } from './discounts-accounts.entity';
