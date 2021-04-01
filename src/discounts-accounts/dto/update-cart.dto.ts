@@ -21,6 +21,12 @@ class CartItemOutput {
 
   @Field(type => Int)
   quantity: number;
+
+  @Field(type => Number, { nullable: true })
+  discountedPrice?: number;
+
+  @Field(type => Number, { nullable: true })
+  free?: number;
 }
 @InputType()
 export class UpdateCartInput {

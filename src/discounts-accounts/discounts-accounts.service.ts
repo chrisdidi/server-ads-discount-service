@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Console } from 'console';
 import { AdTypes } from 'src/ad-types/ad-types.entity';
 import { Repository } from 'typeorm';
 import { DiscountsAccounts } from './discounts-accounts.entity';
@@ -75,6 +76,7 @@ export class DiscountsAccountsService {
 
       let discountedPrice = 0;
       let discountedCart = JSON.parse(JSON.stringify(cart));
+
       if (discountsData.length > 0) {
         for (let i = 0; i < discountsData.length; i++) {
           let curItem = discountedCart[discountsData[i].adType.id];
@@ -85,21 +87,42 @@ export class DiscountsAccountsService {
             curItem.quantity >= discountsData[i].min_purchase &&
             discountsData[i].newPrice !== null
           ) {
-            curItem.price = discountsData[i].newPrice;
+            curItem.discountedPrice = discountsData[i].newPrice;
           }
-          if (
-            totalQuantity >= discountsData[i].min_purchase &&
-            discountsData[i].freeAd !== null
-          ) {
-            const extra = totalQuantity - discountsData[i].min_purchase;
-            const canFree =
-              extra > discountedCart[discountsData[i].adType.id]?.quantity
-                ? discountedCart[discountsData[i].adType.id].quantity
-                : extra;
-            curItem.quantity = curItem.quantity - canFree;
-            totalQuantity = totalQuantity - canFree;
 
-            discountedCart[discountsData[i].adType.id] = curItem;
+          if (totalQuantity >= discountsData[i].min_purchase) {
+            let canContinue = true;
+            let quantity = curItem.quantity;
+            while (canContinue) {
+              const free =
+                quantity < discountsData[i].freeQuantity
+                  ? quantity
+                  : discountsData[i].freeQuantity <
+                    totalQuantity - discountsData[i].min_purchase
+                  ? discountsData[i].freeQuantity
+                  : totalQuantity - discountsData[i].min_purchase;
+
+              quantity = quantity - free;
+              totalQuantity =
+                totalQuantity - free - discountsData[i].min_purchase;
+              const newFree = (curItem.free || 0) + free;
+
+              if (
+                Math.ceil(quantity / discountsData[i].min_purchase) <
+                Math.ceil(newFree / discountsData[i].freeQuantity)
+              ) {
+                canContinue = false;
+                break;
+              }
+              curItem.free = newFree;
+
+              if (
+                totalQuantity <= discountsData[i].min_purchase ||
+                quantity <= 0
+              ) {
+                canContinue = false;
+              }
+            }
           }
         }
       }
@@ -107,18 +130,20 @@ export class DiscountsAccountsService {
       Object.keys(discountedCart).map(a => {
         discountedPrice =
           discountedPrice +
-          discountedCart[a].price * discountedCart[a].quantity;
+          (discountedCart[a].discountedPrice || discountedCart[a].price) *
+            (discountedCart[a].quantity - (discountedCart[a].free || 0));
       });
 
       return {
         data: {
-          cart: Object.values(cart),
-          originalPrice: price,
-          discountedPrice,
+          cart: Object.values(discountedCart),
+          originalPrice: parseFloat(price.toFixed(2)),
+          discountedPrice: parseFloat(discountedPrice.toFixed(2)),
         },
       };
     } catch (e) {
-      throw new InternalServerErrorException();
+      console.log(e);
+      throw new InternalServerErrorException(e);
     }
   }
 }

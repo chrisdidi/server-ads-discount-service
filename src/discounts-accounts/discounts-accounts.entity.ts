@@ -48,5 +48,5 @@ export class DiscountsAccounts extends CoreEntity {
 
   @Column({ default: 0 })
   @Field(type => Number)
-  freeQuantity: Number;
+  freeQuantity: number;
 }

@@ -11,6 +11,7 @@ export class DiscountsAccountsResolver {
 
   @Mutation(returns => UpdateCartOutput)
   async updateCart(@Args('input') input: UpdateCartInput) {
+    console.log(input);
     return this.discountsAccountsService.updateCart(input);
   }
 }
