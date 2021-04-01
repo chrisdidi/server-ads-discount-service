@@ -90,7 +90,10 @@ export class DiscountsAccountsService {
             curItem.discountedPrice = discountsData[i].newPrice;
           }
 
-          if (totalQuantity >= discountsData[i].min_purchase) {
+          if (
+            totalQuantity >= discountsData[i].min_purchase &&
+            discountsData[i].freeAd !== null
+          ) {
             let canContinue = true;
             let quantity = curItem.quantity;
             while (canContinue) {
